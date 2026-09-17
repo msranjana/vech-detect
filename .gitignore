@@ -1,4 +1,13 @@
-.env
+*.mp4
+*.zip
+
+accuracy_test/frames/
+accuracy_test/preview/
+
+models/
+*.pt
+*.onnx
+*.engine.env
 logs/
 __pycache__/
 *.pyc
