@@ -10,6 +10,7 @@ import time
 import config
 from console import say
 # from detectors.smoke_and_fire_detector import SmokeAndFireDetector
+# from detectors.crowd_monitoring_detector import CrowdMonitoringDetector
 from detectors.vehicle_monitoring_detector import VehicleMonitoringDetector
 from engines.alert_engine import AlertEngine
 from engines.event_engine import EventEngine
@@ -26,6 +27,11 @@ def build_detections():
             config.VEHICLE_MONITORING_FPS,
             VehicleMonitoringDetector(),
         ),
+        # DetectionWrapper(
+        #     "crowd_monitoring",
+        #     config.CROWD_MONITORING_FPS,
+        #     CrowdMonitoringDetector(),
+        # ),
     ]
 
 

@@ -52,6 +52,41 @@ curl -L -o models/fire_smoke_yolov8n.pt \
   https://huggingface.co/rabahdev/fire-smoke-yolov8n/resolve/main/best.pt
 ```
 
+## Crowd monitoring
+
+`detectors/crowd_monitoring_detector.py` runs person YOLO detection, lightweight tracking,
+optical flow, and a composite panic score (same logic as your standalone script, without
+Flask, pygame, or inline email credentials).
+
+Enable it in `main.py` by uncommenting the `CrowdMonitoringDetector` `DetectionWrapper` block.
+Tune via `.env`:
+
+| Variable | Default | Meaning |
+| --- | --- | --- |
+| `CROWD_MODEL_PATH` | `yolov8n.pt` | YOLO weights |
+| `CROWD_MONITORING_FPS` | `5` | frames per second for this detection |
+| `CROWD_CONFIDENCE` | `0.30` | person confidence |
+| `CROWD_INFER_EVERY` | `2` | run YOLO every N frames |
+| `CROWD_INFER_SIZE` | `416` | YOLO input size |
+| `CROWD_SUSTAIN_SEC` | `3` | seconds before panic state triggers alerts |
+| `CROWD_ALERT_COOLDOWN` | `60` | seconds between repeated alerts of the same state |
+
+**Latency (crowd only):**
+
+```bash
+python benchmark_latency_crowd.py --video "path/to/video.mp4"
+```
+
+Reports YOLO-only vs full pipeline latency separately from `benchmark_latency.py`.
+
+**Person detection accuracy (crowd only):**
+
+```bash
+python quick_accuracy_crowd.py
+```
+
+Uses `accuracy_test_crowd/` (class `0` = person). Vehicle metrics stay in `quick_accuracy.py`.
+
 ## Adding a detection
 
 Create a class in `detectors/` that extends `BaseDetector` and implements `process`:
